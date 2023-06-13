@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--phone  1280 x 720-->
+<!--tablet 1280 x 800-->
+
+<!--phone-->
+<resources>
+
+    <bool name="is_tablet">false</bool>
+
+    <dimen name="text10">10sp</dimen>
+    <dimen name="text12">12sp</dimen>
+    <dimen name="text14">14sp</dimen>
+    <dimen name="text16">16sp</dimen>
+    <dimen name="text24">24sp</dimen>
+
+    <dimen name="padding8">8dp</dimen>
+    <dimen name="padding10">10dp</dimen>
+    <dimen name="padding16">16dp</dimen>
+    <dimen name="padding24">24dp</dimen>
+    <dimen name="padding32">32dp</dimen>
+    <dimen name="padding48">48dp</dimen>
+
+    <dimen name="padding_p0_t8">0dp</dimen>
+    <dimen name="padding_p8_t16">8dp</dimen>
+    <dimen name="padding_p16_t20">16dp</dimen>
+    <dimen name="padding_p78_t200">78dp</dimen>
+
+    <dimen name="screen_padding">16dp</dimen>
+
+
+<!--//widgets//-->
+    <dimen name="gradientButtonWidth">250dp</dimen>
+    <dimen name="gradientButtonHeight">48dp</dimen>
+
+    <dimen name="etWidth">250dp</dimen>
+    <dimen name="etHeight">36dp</dimen>
+
+    <dimen name="iconSize">24dp</dimen>
+    <dimen name="iconDialogSize">60dp</dimen>
+
+    <dimen name="spinnerWidth">352dp</dimen>
+    <!--//widgets//-->
+
+</resources>

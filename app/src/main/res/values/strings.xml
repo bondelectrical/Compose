@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TestCompose</string>
+    <string name="barcode">Barcode</string>
+</resources>

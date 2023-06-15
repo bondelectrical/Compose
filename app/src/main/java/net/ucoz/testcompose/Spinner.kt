@@ -110,8 +110,10 @@ fun CustomSpinner(
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(selected) }
 
-    val animatedSizeDp: Dp by animateDpAsState(targetValue = if (expanded) 0.dp else 20.dp,
-        animationSpec = tween(durationMillis = 0))
+    val animatedSizeDp: Dp by animateDpAsState(
+        targetValue = if (expanded) 0.dp else 20.dp,
+        animationSpec = tween(durationMillis = 0)
+    )
     Column() {
         Text(
             text = label,
@@ -194,36 +196,26 @@ fun CustomSpinner(
                 ),
                 enabled = false,
             )
-            MaterialTheme(
-                shapes = MaterialTheme.shapes.copy(
-                    medium = RoundedCornerShape(20.dp)
-                        .copy(
-                            topEnd = CornerSize(
-                                0.dp
-                            ), topStart = CornerSize(0.dp)
-                        )
-                )
+            CustomExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier
+                    .background(Color(0xFFFFFFFF))
             ) {
-                CustomExposedDropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false },
-                    modifier = Modifier
-                        .background(Color(0xFFFFFFFF))
-                ) {
-                    values.forEach { item ->
-                        DropdownMenuItem(
-                            onClick = {
-                                onSelected(item)
-                                selectedText = item
-                                expanded = false
-                            },
-                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
-                        ) {
-                            Text(text = item, fontSize = 14.sp, color = Color(0xFF60729E))
-                        }
+                values.forEach { item ->
+                    DropdownMenuItem(
+                        onClick = {
+                            onSelected(item)
+                            selectedText = item
+                            expanded = false
+                        },
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        Text(text = item, fontSize = 14.sp, color = Color(0xFF60729E))
                     }
                 }
             }
+
 
         }
 
@@ -1308,6 +1300,7 @@ internal fun DropdownMenuContent(
 //                transformOrigin = transformOriginState.value
 //            }
             .drawVerticalScrollbar(state, thickness = 4.dp, bottomPaddingIndicator = 16.dp),
+        shape = RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp),
         elevation = MenuElevation
     ) {
         Column(

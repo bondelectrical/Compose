@@ -38,21 +38,27 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -99,6 +105,27 @@ class MainActivity : ComponentActivity() {
                             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                         }
                         Divider(modifier = Modifier.height(32.dp), color = Color.Transparent)
+                        CustomSpinnerV2(
+                            "Reason",
+                            "Choose reason",
+                            listOf(
+                                "Americano",
+                                "Cappuccino",
+                                "Espresso",
+                                "Latte",
+                                "Mocha",
+                                "Americano",
+                                "Cappuccino",
+                                "Espresso",
+                                "Latte",
+                                "Mocha"
+                            ),
+                        ) {
+                            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                        }
+
+                        Divider(modifier = Modifier.height(32.dp), color = Color.Transparent)
+                        Divider(modifier = Modifier.height(32.dp), color = Color.Transparent)
                         RegularButton(
                             modifier = Modifier,
                             text = "MenuButtonPreview",
@@ -108,6 +135,52 @@ class MainActivity : ComponentActivity() {
                         }
                     }
 
+                }
+            }
+        }
+    }
+}
+
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun ExposedDropdownMenuSample() {
+    val options = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOptionText by remember { mutableStateOf(options[0]) }
+    // We want to react on tap/press on TextField to show menu
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = {
+            expanded = !expanded
+        }
+    ) {
+        TextField(
+            readOnly = true,
+            value = selectedOptionText,
+            onValueChange = { },
+            label = { Text("Label") },
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(
+                    expanded = expanded
+                )
+            },
+            colors = ExposedDropdownMenuDefaults.textFieldColors()
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = {
+                expanded = false
+            }
+        ) {
+            options.forEach { selectionOption ->
+                DropdownMenuItem(
+                    onClick = {
+                        selectedOptionText = selectionOption
+                        expanded = false
+                    }
+                ) {
+                    Text(text = selectionOption)
                 }
             }
         }

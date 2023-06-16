@@ -60,9 +60,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.window.Popup
 import androidx.core.view.isVisible
 import net.ucoz.testcompose.ui.theme.*
 
@@ -123,8 +125,25 @@ class MainActivity : ComponentActivity() {
                         ) {
                             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                         }
-
                         Divider(modifier = Modifier.height(32.dp), color = Color.Transparent)
+                        CustomSpinnerV3(
+                            "Reason",
+                            "Choose reason",
+                            listOf(
+                                "Americano",
+                                "Cappuccino",
+                                "Espresso",
+                                "Latte",
+                                "Mocha",
+                                "Americano",
+                                "Cappuccino",
+                                "Espresso",
+                                "Latte",
+                                "Mocha"
+                            ),
+                        ) {
+                            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                        }
                         Divider(modifier = Modifier.height(32.dp), color = Color.Transparent)
                         RegularButton(
                             modifier = Modifier,

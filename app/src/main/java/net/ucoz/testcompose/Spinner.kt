@@ -1293,12 +1293,12 @@ internal fun DropdownMenuContent(
     val state = rememberScrollState()
     Card(
         modifier = Modifier
-//            .graphicsLayer {
-//                scaleX = scale
-//                scaleY = scale
-//                this.alpha = alpha
-//                transformOrigin = transformOriginState.value
-//            }
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+                this.alpha = alpha
+                transformOrigin = transformOriginState.value
+            }
             .drawVerticalScrollbar(state, thickness = 4.dp, bottomPaddingIndicator = 16.dp),
         shape = RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp),
         elevation = MenuElevation

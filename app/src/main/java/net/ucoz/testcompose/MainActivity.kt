@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -18,6 +19,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -66,96 +68,110 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Popup
 import androidx.core.view.isVisible
+import net.ucoz.testcompose.stopWatch.StopWatch
+import net.ucoz.testcompose.stopWatch.StopWatchViewModel
 import net.ucoz.testcompose.ui.theme.*
+import java.util.Timer
+import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.concurrent.fixedRateTimer
+import kotlin.time.ExperimentalTime
 
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalComposeUiApi::class)
+
+    @OptIn(ExperimentalTime::class)
+    private val viewModel: StopWatchViewModel by viewModels()
+    @OptIn(ExperimentalComposeUiApi::class, ExperimentalTime::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
         setContent {
             TestComposeTheme {
-                val context = LocalContext.current
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = Bgr
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        CustomSpinner(
-                            "Reason",
-                            "Choose reason",
-                            listOf(
-                                "Americano",
-                                "Cappuccino",
-                                "Espresso",
-                                "Latte",
-                                "Mocha",
-                                "Americano",
-                                "Cappuccino",
-                                "Espresso",
-                                "Latte",
-                                "Mocha"
-                            ),
-                        ) {
-                            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                        }
-                        Divider(modifier = Modifier.height(32.dp), color = Color.Transparent)
-                        CustomSpinnerV2(
-                            "Reason",
-                            "Choose reason",
-                            listOf(
-                                "Americano",
-                                "Cappuccino",
-                                "Espresso",
-                                "Latte",
-                                "Mocha",
-                                "Americano",
-                                "Cappuccino",
-                                "Espresso",
-                                "Latte",
-                                "Mocha"
-                            ),
-                        ) {
-                            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                        }
-                        Divider(modifier = Modifier.height(32.dp), color = Color.Transparent)
-                        CustomSpinnerV3(
-                            "Reason",
-                            "Choose reason",
-                            listOf(
-                                "Americano",
-                                "Cappuccino",
-                                "Espresso",
-                                "Latte",
-                                "Mocha",
-                                "Americano",
-                                "Cappuccino",
-                                "Espresso",
-                                "Latte",
-                                "Mocha"
-                            ),
-                        ) {
-                            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                        }
-                        Divider(modifier = Modifier.height(32.dp), color = Color.Transparent)
-                        RegularButton(
-                            modifier = Modifier,
-                            text = "MenuButtonPreview",
-                            enabled = true
-                        ) {
-
-                        }
-                    }
+                    StopWatch(viewModel)
 
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun Spinner() {
+    val context = LocalContext.current
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        CustomSpinner(
+            "Reason",
+            "Choose reason",
+            listOf(
+                "Americano",
+                "Cappuccino",
+                "Espresso",
+                "Latte",
+                "Mocha",
+                "Americano",
+                "Cappuccino",
+                "Espresso",
+                "Latte",
+                "Mocha"
+            ),
+        ) {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
+        Divider(modifier = Modifier.height(32.dp), color = Color.Transparent)
+        CustomSpinnerV2(
+            "Reason",
+            "Choose reason",
+            listOf(
+                "Americano",
+                "Cappuccino",
+                "Espresso",
+                "Latte",
+                "Mocha",
+                "Americano",
+                "Cappuccino",
+                "Espresso",
+                "Latte",
+                "Mocha"
+            ),
+        ) {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
+        Divider(modifier = Modifier.height(32.dp), color = Color.Transparent)
+        CustomSpinnerV3(
+            "Reason",
+            "Choose reason",
+            listOf(
+                "Americano",
+                "Cappuccino",
+                "Espresso",
+                "Latte",
+                "Mocha",
+                "Americano",
+                "Cappuccino",
+                "Espresso",
+                "Latte",
+                "Mocha"
+            ),
+        ) {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
+        Divider(modifier = Modifier.height(32.dp), color = Color.Transparent)
+        RegularButton(
+            modifier = Modifier,
+            text = "MenuButtonPreview",
+            enabled = true
+        ) {
+
         }
     }
 }

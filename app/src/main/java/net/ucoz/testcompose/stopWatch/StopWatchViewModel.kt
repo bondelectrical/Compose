@@ -12,14 +12,16 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.toDuration
 
 @ExperimentalTime
-class StopWatchViewModel: ViewModel() {
+class StopWatchViewModel : ViewModel() {
     private var time: Duration = Duration.ZERO
     private lateinit var timer: Timer
+
 
     var seconds by mutableStateOf("00")
     var minutes by mutableStateOf("00")
     var hours by mutableStateOf("00")
     var isPlaying by mutableStateOf(false)
+    var isFirstStart by mutableStateOf(false)
 
     fun start() {
         timer = fixedRateTimer(initialDelay = 1000L, period = 1000L) {
@@ -27,10 +29,12 @@ class StopWatchViewModel: ViewModel() {
             updateTimeStates()
         }
         isPlaying = true
+        isFirstStart = true
+
     }
 
     private fun updateTimeStates() {
-        time.toComponents {hours, minutes, seconds, _ ->
+        time.toComponents { hours, minutes, seconds, _ ->
             this@StopWatchViewModel.seconds = seconds.pad()
             this@StopWatchViewModel.minutes = minutes.pad()
             this@StopWatchViewModel.hours = hours.pad()
@@ -43,9 +47,12 @@ class StopWatchViewModel: ViewModel() {
     }
 
     fun stop() {
-        pause()
-        time = Duration.ZERO
-        updateTimeStates()
+        if(isFirstStart) {
+            pause()
+            time = Duration.ZERO
+            updateTimeStates()
+            isFirstStart = false
+        }
     }
 
     private fun Int.pad(): String {

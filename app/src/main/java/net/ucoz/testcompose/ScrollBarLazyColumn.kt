@@ -14,11 +14,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.ucoz.testcompose.presentation.widget.scroll.fastSumBy
 
 //@Suppress("BanInlineOptIn")
 //@OptIn(ExperimentalContracts::class)

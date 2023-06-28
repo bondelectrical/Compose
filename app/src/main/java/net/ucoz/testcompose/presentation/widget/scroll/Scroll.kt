@@ -1,17 +1,12 @@
-package net.ucoz.testcompose
+package net.ucoz.testcompose.presentation.widget.scroll
 
 
 import android.content.res.Resources
-import android.view.ViewConfiguration
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -22,33 +17,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
-import androidx.compose.ui.draw.CacheDrawScope
 import androidx.compose.ui.draw.DrawModifier
-import androidx.compose.ui.draw.DrawResult
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import net.ucoz.testcompose.ui.theme.LightBlue
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -75,7 +55,7 @@ inline fun <T> List<T>.fastSumBy(selector: (T) -> Int): Int {
 
 fun Modifier.drawVerticalScrollbar(
     state: ScrollState,
-    thickness: Dp = 6.dp,
+    thickness: Dp = 4.dp,
     topPaddingIndicator: Dp = 0.dp,
     bottomPaddingIndicator: Dp = 0.dp,
     endPaddingIndicator: Dp = 0.dp,
@@ -108,7 +88,7 @@ fun Modifier.drawVerticalScrollbar(
 
 fun Modifier.drawVerticalScrollbar(
     state: LazyListState,
-    thickness: Dp = 6.dp,
+    thickness: Dp = 4.dp,
     topPaddingIndicator: Dp = 0.dp,
     bottomPaddingIndicator: Dp = 0.dp,
     endPaddingIndicator: Dp = 0.dp,

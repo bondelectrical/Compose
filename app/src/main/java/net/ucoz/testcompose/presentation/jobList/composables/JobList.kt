@@ -5,7 +5,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import net.ucoz.testcompose.R
 import net.ucoz.testcompose.presentation.jobList.JobListContract
-import net.ucoz.testcompose.presentation.jobList.JobUI
+import net.ucoz.testcompose.presentation.models.JobUI
 import net.ucoz.testcompose.presentation.widget.lazyList.LazyListWithFloatingButton
 
 @Composable

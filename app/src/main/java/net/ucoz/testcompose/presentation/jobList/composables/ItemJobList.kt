@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.ucoz.testcompose.R
-import net.ucoz.testcompose.presentation.jobList.JobUI
+import net.ucoz.testcompose.presentation.models.JobUI
 import net.ucoz.testcompose.ui.theme.DarkBlue
 import net.ucoz.testcompose.ui.theme.GreenLight
 import net.ucoz.testcompose.ui.theme.MiddleBlue

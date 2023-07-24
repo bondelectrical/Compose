@@ -1,6 +1,7 @@
 package net.ucoz.testcompose
 
 import android.R
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
@@ -22,17 +23,24 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.*
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import net.ucoz.testcompose.presentation.navigation.AppNavHost
+import net.ucoz.testcompose.presentation.util.ConnectionState
+import net.ucoz.testcompose.presentation.util.connectivityState
 import net.ucoz.testcompose.ui.theme.*
 import kotlin.time.ExperimentalTime
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @OptIn(ExperimentalTime::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +49,27 @@ class MainActivity : ComponentActivity() {
         setContent {
             TestComposeTheme {
                 val navController = rememberNavController()
-                Surface(
+                val connection by connectivityState()
+                Scaffold(
+                    topBar = {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(8.dp),
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            Text(
+                            text = if (connection == ConnectionState.Available) "Online" else "Offline",
+                                textAlign = TextAlign.Center,
+
+                                fontWeight = FontWeight.W900,
+                                fontStyle = FontStyle.Normal,
+                                fontSize = 14.sp,
+                            color = if (connection == ConnectionState.Available) Green else LightBlue,
+                            )
+                        }
+
+                    },
                     modifier = Modifier.fillMaxSize(),
-                    color = Bgr
+                    backgroundColor = Bgr
                 ) {
                     AppNavHost(navController)
 

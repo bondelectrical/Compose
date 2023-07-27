@@ -53,7 +53,9 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     topBar = {
                         Row(
-                            modifier = Modifier.fillMaxWidth().padding(8.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
                             horizontalArrangement = Arrangement.End
                         ) {
                             Text(
@@ -88,6 +90,7 @@ fun Spinner() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+
         CustomSpinner(
             "Reason",
             "Choose reason",

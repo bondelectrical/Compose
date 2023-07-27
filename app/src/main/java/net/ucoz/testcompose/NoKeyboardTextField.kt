@@ -13,8 +13,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -31,7 +33,7 @@ import net.ucoz.testcompose.ui.theme.TestComposeTheme
 @Composable
 fun NoKeyboardTextField(
     modifier: Modifier = Modifier,
-    text: String,
+    text: MutableState<String>,
     hintText: String,
 
     singleLine: Boolean = true,
@@ -88,7 +90,7 @@ fun NoKeyboardTextField(
             textEdit.isFocusableInTouchMode = true
             textEdit.showSoftInputOnFocus = false
             textEdit.inputType = InputType.TYPE_MASK_CLASS
-            textEdit.setText(text)
+            textEdit.setText(text.value)
             textEdit.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence,
@@ -126,8 +128,8 @@ fun NoKeyboardTextField(
         update = { view ->
             val textEdit =
                 view.findViewById<AppCompatEditText>(R.id.edit_text)
-            textEdit.setText(text)
-            textEdit.setSelection(text.length)
+            textEdit.setText(text.value)
+            textEdit.setSelection(text.value.length)
             textEdit.gravity = Gravity.CENTER_VERTICAL
             textEdit.setPadding(padding16.toInt(), 0, 0, 0)
         }
@@ -140,7 +142,7 @@ fun NoKeyboardTextFieldPreview() {
     TestComposeTheme {
         var firstText by rememberSaveable { mutableStateOf("") }
         NoKeyboardTextField(
-            text = "",
+            text = remember { mutableStateOf("") },
             hintText = "Barcode",
             codeButtonClick = { "AAA-123456"}
         ) {

@@ -34,17 +34,13 @@ import net.ucoz.testcompose.ui.theme.DarkBlue
 
 @Composable
 fun LazyListWithFloatingButton(
-    enabledButton: Boolean = true,
-    textButton: String = "Submit",
-    onButtonClick: () -> Unit,
-    topPaddingButton: Dp = 32.dp,
-    bottomPaddingButton: Dp = 32.dp,
+    bottomContent: @Composable () -> Unit,
     enabledIndicator: Boolean = false,
     thickness: Dp = 6.dp,
     topPaddingIndicator: Dp = 0.dp,
     bottomPaddingIndicator: Dp = 0.dp,
     endPaddingIndicator: Dp = 8.dp,
-    content: LazyListScope.() -> Unit
+    topContent: LazyListScope.() -> Unit
 ) {
     val state = rememberLazyListState()
     var space by remember {
@@ -90,9 +86,9 @@ fun LazyListWithFloatingButton(
         verticalArrangement = Arrangement.Top
     ) {
 
-        content()
-        ButtonInList(textButton, enabledButton, topPaddingButton, bottomPaddingButton, offset) {
-            onButtonClick()
+        topContent()
+        ButtonInList(offset) {
+                bottomContent()
         }
 
     }
@@ -100,28 +96,12 @@ fun LazyListWithFloatingButton(
 }
 
 private fun LazyListScope.ButtonInList(
-    text: String,
-    enabled: Boolean = true,
-    topPaddingButton: Dp,
-    bottomPaddingButton: Dp,
-    offset: Int, onSubmitClick: () -> Unit
+    offset: Int,
+    bottomContent: @Composable () -> Unit,
 ) {
     item {
-        Spacer(modifier = androidx.compose.ui.Modifier.size((offset).toDp().dp))
-        Spacer(modifier = Modifier.size(topPaddingButton))
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            RegularButton(
-                modifier = Modifier,
-                enabled = enabled,
-                text = text,
-            ) {
-                onSubmitClick()
-            }
-        }
-        Spacer(modifier = Modifier.size(bottomPaddingButton))
+        Spacer(modifier = Modifier.size((offset).toDp().dp))
+        bottomContent()
     }
 
 }
@@ -149,8 +129,27 @@ private class GetUnusedVerticalSpace(
 @Preview(showBackground = true)
 @Composable
 fun LazyListWithFloatingButtonPreview() {
+    val enabledButton: Boolean = true
+    val textButton: String = "Submit"
+    val topPaddingButton: Dp = 32.dp
+    val bottomPaddingButton: Dp = 32.dp
     LazyListWithFloatingButton(
-        onButtonClick = {}
+        bottomContent = {
+            Spacer(modifier = Modifier.size(topPaddingButton))
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                RegularButton(
+                    modifier = Modifier,
+                    enabled = enabledButton,
+                    text = textButton,
+                ) {
+//                    on Submit Click
+                }
+            }
+            Spacer(modifier = Modifier.size(bottomPaddingButton))
+        },
     ) {
         items(20) {
             Text(

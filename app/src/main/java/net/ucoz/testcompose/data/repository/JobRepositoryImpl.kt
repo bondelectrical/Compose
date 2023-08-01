@@ -1,8 +1,7 @@
 package net.ucoz.testcompose.data.repository
-
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.RedirectResponseException
-import io.ktor.client.plugins.ServerResponseException
+import io.ktor.client.features.ClientRequestException
+import io.ktor.client.features.RedirectResponseException
+import io.ktor.client.features.ServerResponseException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.ucoz.testcompose.data.models.Job

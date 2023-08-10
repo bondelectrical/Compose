@@ -47,9 +47,10 @@ import net.ucoz.testcompose.ui.theme.DarkBlue
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun LazyListWithFloatingButton(
+fun LazyListWithFloatingButtonV2(
     bottomContent: @Composable () -> Unit,
     enabledIndicator: Boolean = false,
+    state: LazyListState = rememberLazyListState(),
     thickness: Dp = 6.dp,
     topPaddingIndicator: Dp = 0.dp,
     bottomPaddingIndicator: Dp = 0.dp,
@@ -57,24 +58,56 @@ fun LazyListWithFloatingButton(
     topContent: LazyListScope.() -> Unit,
 
     ) {
-    val state = rememberLazyListState()
+//    val state = rememberLazyListState()
+
     var space by remember {
         mutableStateOf(0)
     }
     var offset by remember {
         mutableStateOf(0)
     }
-
-    val layoutInfo = state.layoutInfo
-    val viewportSize = layoutInfo.viewportEndOffset - layoutInfo.viewportStartOffset
-    val items = layoutInfo.visibleItemsInfo
-    val itemsSize = items.fastSumBy { it.size }
-    val showScrollbar =
-        items.size < layoutInfo.totalItemsCount || itemsSize > viewportSize
-    if ((itemsSize + offset) < space) {
-        offset = if (showScrollbar) 0 else space - itemsSize
-
+    var isCalculation by remember {
+        mutableStateOf(true)
     }
+    val layoutInfo = remember { derivedStateOf { state.layoutInfo } }
+    val viewportSize = layoutInfo.value.viewportEndOffset - layoutInfo.value.viewportStartOffset
+    if (state.layoutInfo.visibleItemsInfo.isNotEmpty()) {
+        Log.d("MyTag", "viewportSize ${ state.layoutInfo.visibleItemsInfo.last ().index}")
+    }
+
+
+    Log.d("MyTag", "layoutInfo.value.viewportEndOffset ${layoutInfo.value.visibleItemsInfo.toString()}")
+    Log.d("MyTag", "layoutInfo.value.viewportStartOffset ${layoutInfo.value.viewportStartOffset}")
+    val items = layoutInfo.value.visibleItemsInfo
+    val itemsSize = items.fastSumBy { it.size }
+    Log.d("MyTag", "itemsSize $itemsSize")
+    Log.d("MyTag", "items.size ${items.size}")
+    val showScrollbar =
+        items.size < layoutInfo.value.totalItemsCount || itemsSize - offset > viewportSize
+    Log.d("MyTag", "showScrollbar $showScrollbar")
+
+
+
+    isCalculation = (itemsSize) < space
+    Log.d("MyTag", "isCalculation $isCalculation")
+//    if (isCalculation) {
+//        Log.d("MyTag","offset  1111 $offset")
+//        offset = if (showScrollbar) 0 else space - itemsSize.value
+//
+//    }
+    val isChengBottomItem: MutableState<Int> = remember {
+        mutableStateOf(0)
+    }
+    if (items.isNotEmpty()) isChengBottomItem.value = items.last().size
+    LaunchedEffect(key1 = isCalculation, key2 = items.size) {
+        Log.d("MyTag", "LaunchedEffect ")
+        offset = if (showScrollbar) 0 else space - itemsSize - offset
+    }
+
+    Log.d("MyTag", "offset $offset")
+    Log.d("MyTag", "space $space")
+
+
 
     LazyColumn(
         userScrollEnabled = true,
@@ -129,63 +162,45 @@ private fun LazyListScope.ButtonInList(
 
 }
 
-private fun Modifier.getUnusedVerticalSpace(
-    getSpace: (space: Float) -> Unit,
-) = composed {
-    GetUnusedVerticalSpace() {
-        getSpace(it)
-    }
 
 
-}
-
-private class GetUnusedVerticalSpace(
-    private val getSpace: (space: Float) -> Unit,
-) : DrawModifier {
-    override fun ContentDrawScope.draw() {
-        getSpace(size.height)
-        drawContent()
-    }
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LazyListWithFloatingButtonPreview() {
-    val enabledButton: Boolean = true
-    val textButton: String = "Submit"
-    val topPaddingButton: Dp = 32.dp
-    val bottomPaddingButton: Dp = 32.dp
-    LazyListWithFloatingButton(
-        bottomContent = {
-            Spacer(modifier = Modifier.size(topPaddingButton))
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                RegularButton(
-                    modifier = Modifier,
-                    enabled = enabledButton,
-                    text = textButton,
-                ) {
-//                    on Submit Click
-                }
-            }
-            Spacer(modifier = Modifier.size(bottomPaddingButton))
-        },
-    ) {
-        items(20) {
-            Text(
-                text = "Please, scan Case card ID barcode",
-                fontSize = 16.sp,
-                color = DarkBlue,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun LazyListWithFloatingButtonPreview() {
+//    val enabledButton: Boolean = true
+//    val textButton: String = "Submit"
+//    val topPaddingButton: Dp = 32.dp
+//    val bottomPaddingButton: Dp = 32.dp
+//    LazyListWithFloatingButton(
+//        bottomContent = {
+//            Spacer(modifier = Modifier.size(topPaddingButton))
+//            Box(
+//                modifier = Modifier.fillMaxSize(),
+//                contentAlignment = Alignment.Center
+//            ) {
+//                RegularButton(
+//                    modifier = Modifier,
+//                    enabled = enabledButton,
+//                    text = textButton,
+//                ) {
+////                    on Submit Click
+//                }
+//            }
+//            Spacer(modifier = Modifier.size(bottomPaddingButton))
+//        },
+//    ) {
+//        items(20) {
+//            Text(
+//                text = "Please, scan Case card ID barcode",
+//                fontSize = 16.sp,
+//                color = DarkBlue,
+//                fontWeight = FontWeight.Bold,
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .padding(8.dp),
+//                textAlign = TextAlign.Center
+//            )
+//        }
+//    }
+//
+//}

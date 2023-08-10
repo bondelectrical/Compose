@@ -20,6 +20,7 @@ import net.ucoz.testcompose.presentation.jobList.JobListContract
 import net.ucoz.testcompose.presentation.models.JobUI
 import net.ucoz.testcompose.presentation.widget.button.RegularButton
 import net.ucoz.testcompose.presentation.widget.lazyList.LazyListWithFloatingButton
+import net.ucoz.testcompose.presentation.widget.lazyList.LazyListWithFloatingButtonV2
 import net.ucoz.testcompose.ui.theme.DarkBlue
 
 @Composable

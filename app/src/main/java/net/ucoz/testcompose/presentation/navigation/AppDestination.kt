@@ -11,6 +11,8 @@ import net.ucoz.testcompose.presentation.jobList.JobListViewModel
 import net.ucoz.testcompose.presentation.models.JobUI
 import net.ucoz.testcompose.presentation.secondScreen.SecondScreen
 import net.ucoz.testcompose.presentation.secondScreen.SecondScreenViewModel
+import net.ucoz.testcompose.presentation.thirdScreen.ThirdScreen
+import net.ucoz.testcompose.presentation.thirdScreen.ThirdScreenViewModel
 
 @Composable
 fun FirstScreenDestination(navController: NavHostController) {
@@ -45,6 +47,18 @@ fun SecondScreenDestination(navController: NavHostController) {
         state = viewModelSecondScreen.viewState.value,
         effectFlow = viewModelSecondScreen.effect,
         onEventSent = { event -> viewModelSecondScreen.setEvent(event) },
+        onNavigationRequested = { navigationEffect ->
+
+        }
+    )
+}
+@Composable
+fun ThirdScreenDestination(navController: NavHostController) {
+    val viewModelThirdScreen: ThirdScreenViewModel = hiltViewModel()
+    ThirdScreen(
+        state = viewModelThirdScreen.viewState.value,
+        effectFlow = viewModelThirdScreen.effect,
+        onEventSent = { event -> viewModelThirdScreen.setEvent(event) },
         onNavigationRequested = { navigationEffect ->
 
         }

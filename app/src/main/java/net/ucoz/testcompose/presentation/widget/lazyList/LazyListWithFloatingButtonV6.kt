@@ -3,72 +3,51 @@ package net.ucoz.testcompose.presentation.widget.lazyList
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.BottomAppBar
+import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.rememberSwipeableState
-import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollDispatcher
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
-import net.ucoz.testcompose.presentation.widget.scroll.drawVerticalScrollbar
-import kotlin.math.roundToInt
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.composed
-import androidx.compose.ui.zIndex
 import kotlinx.coroutines.launch
-import net.ucoz.testcompose.presentation.widget.scroll.fastSumBy
+import net.ucoz.testcompose.presentation.widget.scroll.drawVerticalScrollbar
 import net.ucoz.testcompose.presentation.widget.scroll.toDp
 import kotlin.math.abs
-
+import kotlin.math.roundToInt
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalMaterialApi
 @Composable
-fun LazyListWithFloatingButtonV3(
+fun LazyListWithFloatingButtonV6(
     bottomContent: @Composable () -> Unit,
     enabledIndicator: Boolean = false,
     state: LazyListState = rememberLazyListState(),
@@ -78,78 +57,49 @@ fun LazyListWithFloatingButtonV3(
     endPaddingIndicator: Dp = 8.dp,
     topContent: LazyListScope.() -> Unit,
 ) {
-    var padding by remember {
-        mutableStateOf(0)
+    var toolbarHeight by remember {
+        mutableStateOf(228)
     }
-    var offset by remember {
-        mutableStateOf(0)
-    }
-    var height by remember {
+
+    val padding = remember {
         mutableStateOf(0)
     }
 
-    var heightLazy by remember {
-        mutableStateOf(0)
+    var enabled by remember {
+        mutableStateOf(true)
     }
 
-    val localDensity = LocalDensity.current
+    val bottomBarHeight = toolbarHeight.toDp().dp
+    val bottomBarHeightPx = with(LocalDensity.current) { bottomBarHeight.roundToPx().toFloat() }
     val bottomBarOffsetHeightPx = remember { mutableStateOf(0f) }
 
-    val local = LocalDensity.current
-
-    LaunchedEffect(true) {
-        heightLazy = height
-    }
-
-    LaunchedEffect(state.isScrolledToTheEnd(), padding ) {
-        if (padding > 0) {
-            heightLazy = height - offset
-        } else {
-            heightLazy = height
-        }
-
-    }
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                val bottomBarHeight = offset.toDp().dp
-                val bottomBarHeightPx = with(localDensity) { bottomBarHeight.roundToPx().toFloat() }
-
                 val delta = available.y
-                Log.d("Mytag", "delta = ${delta}")
+
                 val newOffset = bottomBarOffsetHeightPx.value + delta
                 bottomBarOffsetHeightPx.value = newOffset.coerceIn(-bottomBarHeightPx, 0f)
-                padding = abs(bottomBarOffsetHeightPx.value.roundToInt())
-                Log.d("Mytag", "padding = ${padding}")
-                Log.d("Mytag", "offset = ${offset}")
+                padding.value = abs( bottomBarOffsetHeightPx.value.roundToInt())
+
+                Log.d("MyTag", "padding.value = ${padding.value}")
+                Log.d("MyTag", "toolbarHeight.value = ${toolbarHeight}")
+                Log.d("MyTag", "toolbarHeight  dp = ${toolbarHeight.toDp().dp}")
                 return Offset.Zero
             }
         }
     }
-    Scaffold(
-        modifier = Modifier
+
+
+
+
+    Box(
+        Modifier
             .fillMaxSize()
             .nestedScroll(nestedScrollConnection)
-            .onGloballyPositioned {
-                height = it.size.height
-            },
-        bottomBar = {
-            AnimatedVisibility(visible = state.isScrolledToTheEnd()) {
-//            AnimatedVisibility(visible = padding != 0) {
-                Box(
-                    modifier = Modifier
-                        .onGloballyPositioned {
-                            offset = it.size.height
-                        }
-
-                ) {
-                    bottomContent()
-                }
-            }
-        },
     ) {
         LazyColumn(
-            userScrollEnabled = true,
+            contentPadding = PaddingValues(bottom = toolbarHeight.toDp().dp),
             modifier = if (enabledIndicator) {
                 Modifier
                     .drawVerticalScrollbar(
@@ -159,16 +109,30 @@ fun LazyListWithFloatingButtonV3(
                         bottomPaddingIndicator = bottomPaddingIndicator,
                         endPaddingIndicator = endPaddingIndicator,
                     )
-                    .height(heightLazy.toDp().dp)
             } else {
                 Modifier
-                    .height(heightLazy.toDp().dp)
             },
             state = state,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
             topContent()
+            item {
+                Button(onClick = {
+                    enabled = enabled.not()
+                    Log.d("MyTag", " enabled = ${ enabled}")
+
+                }) {
+                    Text(text = "Click")
+
+                }
+            }
+        }
+        BottomAppBar(            modifier = Modifier.height(if(enabled){toolbarHeight.toDp().dp} else {0.dp})
+//            .height(toolbarHeight.minus(padding.value).toDp().dp)
+        ) {
+            bottomContent()
+            
         }
     }
 
@@ -177,8 +141,15 @@ fun LazyListWithFloatingButtonV3(
             state.scrollToItem(state.layoutInfo.totalItemsCount - 1)
         }
     }
+//    LaunchedEffect(state.layoutInfo.visibleItemsInfo) {
+//        if (state.isScrolledToTheEnd()) {
+//            enabled = true
+//            Log.d("Mytag", "enabled = true")
+//        } else {
+//            enabled = false
+//            Log.d("Mytag", "enabled = false")
+//        }
+//    }
+
+
 }
-
-
-fun LazyListState.isScrolledToTheEnd() =
-    layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1

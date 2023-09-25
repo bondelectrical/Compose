@@ -13,7 +13,7 @@ class ThirdScreenContract {
     }
 
     data class State(
-        var isShowCompleteButton: Boolean = true,
+        var isShowCompleteButton: Boolean = false,
         var content: MutableList<String> = getContent(),
         var isUpdateScreen: Boolean = false
     ) : ViewState
@@ -23,7 +23,7 @@ class ThirdScreenContract {
 
 private fun getContent(): MutableList<String> {
     var content: MutableList<String> = mutableListOf()
-    for(i in 1..17) {
+    for(i in 1..20) {
         content.add("Item number $i")
     }
     return content

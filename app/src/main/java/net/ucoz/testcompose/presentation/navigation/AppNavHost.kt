@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 @Composable
 fun AppNavHost(navHostController: NavHostController) {
 
-    NavHost(navController = navHostController, startDestination = ScreenRoute.Third.route) {
+    NavHost(navController = navHostController, startDestination = ScreenRoute.Second.route) {
         composable(ScreenRoute.First.route) {
             FirstScreenDestination(navHostController)
         }

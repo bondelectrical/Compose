@@ -35,6 +35,24 @@ class SecondScreenViewModel @Inject constructor():
 
 
             }
+            is SecondScreenContract.Event.ScanSecondBarcodeClicked -> {
+                setState {
+                    copy(
+                        secondBarcode = event.id
+                    )
+                }
+
+
+            }
+            is SecondScreenContract.Event.ScanThirdBarcodeClicked -> {
+                setState {
+                    copy(
+                        thirdBarcode = event.id
+                    )
+                }
+
+
+            }
 
         }
     }

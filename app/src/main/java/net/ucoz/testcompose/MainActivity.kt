@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.*
@@ -22,11 +23,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.*
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,6 +39,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import net.ucoz.testcompose.presentation.navigation.AppNavHost
 import net.ucoz.testcompose.presentation.util.ConnectionState
 import net.ucoz.testcompose.presentation.util.connectivityState
+import net.ucoz.testcompose.presentation.widget.button.MinusButton
+import net.ucoz.testcompose.presentation.widget.button.PlusButton
+import net.ucoz.testcompose.presentation.widget.common.DefinitionOfPadding
+import net.ucoz.testcompose.presentation.widget.scroll.toDp
 import net.ucoz.testcompose.ui.theme.*
 import kotlin.time.ExperimentalTime
 
@@ -71,10 +79,10 @@ class MainActivity : ComponentActivity() {
 
                     },
                     modifier = Modifier.fillMaxSize(),
-                    backgroundColor = Bgr
+                    backgroundColor = Bgr,
                 ) {
                     AppNavHost(navController)
-
+                    DefinitionOfPadding()
                 }
             }
         }

@@ -14,6 +14,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -27,7 +29,7 @@ import net.ucoz.testcompose.ui.theme.IconBlue
 @Composable
 fun NoKeyboardTextFieldV2(
     modifier: Modifier = Modifier,
-    text: MutableState<String>,
+    text: String,
     hintText: String,
     isKeyBoardEnable: Boolean = false,
     singleLine: Boolean = true,
@@ -37,6 +39,7 @@ fun NoKeyboardTextFieldV2(
     onValueChange: (String) -> Unit,
 
     ) {
+    val message by rememberUpdatedState(text)
     val r: Resources = Resources.getSystem()
     val padding16 = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
@@ -84,7 +87,7 @@ fun NoKeyboardTextFieldV2(
             textEdit.isFocusableInTouchMode = true
             textEdit.showSoftInputOnFocus = isKeyBoardEnable
             textEdit.inputType = InputType.TYPE_MASK_CLASS
-            textEdit.setText(text.value)
+            textEdit.setText(message)
             textEdit.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence,
@@ -114,16 +117,18 @@ fun NoKeyboardTextFieldV2(
                     onValueChange(s.toString())
                 }
             })
-            btnClear.setOnClickListener { textEdit.setText("") }
-            btnCode.setOnClickListener { textEdit.setText(codeButtonClick()) }
+//            btnClear.setOnClickListener { textEdit.setText("") }
+//            btnCode.setOnClickListener { textEdit.setText(codeButtonClick()) }
+            btnClear.setOnClickListener { onValueChange("") }
+            btnCode.setOnClickListener {onValueChange(codeButtonClick()) }
 
             frameLayout
         },
         update = { view ->
             val textEdit =
                 view.findViewById<AppCompatEditText>(R.id.edit_text)
-            textEdit.setText(text.value)
-            textEdit.setSelection(text.value.length)
+            textEdit.setText(message)
+            textEdit.setSelection(text.length)
             textEdit.gravity = Gravity.CENTER_VERTICAL
             textEdit.setPadding(padding16.toInt(), 0, 0, 0)
         }
